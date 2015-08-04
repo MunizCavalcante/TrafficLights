@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+
+    <head>
+        <title>Testing</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--Dependency-->
+        <script type="text/javascript" src="http://yui.yahooapis.com/2.8.1/build/yahoo/yahoo-min.js"></script>
+        <script type="text/javascript" src="http://yui.yahooapis.com/2.8.1/build/event/event-min.js"></script>
+        <script type="text/javascript" src="http://yui.yahooapis.com/2.8.1/build/connection/connection-min.js"></script>
+        <script type="text/javascript" src="http://yui.yahooapis.com/2.8.1/build/json/json-min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="http://yui.yahooapis.com/3.2.0/build/yui/yui-min.js"> </script>
+        <script type="text/javascript" src="../javascript/base64.js" defer></script>
+        <script type="text/javascript" src="../javascript/eXistAccess2.js" defer></script>
+        <script type="text/javascript" src="../javascript/PN_Runner.js" defer></script>
+        <script type="text/javascript">
+
+        function start_TrafficLight()
+        {
+            var colors = ["green", "yellow", "red"];
+
+            PN_Runner_Constructor();
+            stop = false;
+            transitions = [];
+            transitions.push("T1a");
+            transitions.push("T1b");
+            transitions.push("T1c");
+
+            url = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
+            var argument = new Argument( "onSuccess", function() {buildTransitionList(); this.setWait('false');}, false, true);
+            getDocument(url, argument );
+
+            
+            while ( Argument.prototype.getWait() === true ) // this is returning undefined...
+            {
+
+                ;
+            }
+            var j = 0;
+            while (!stop)
+            {
+
+                for (var i=0; i<transitions.length; i++)
+                {
+                    enabled(transitions, transitions[i]);
+                    alert(transitions[i] + ":" + status);
+
+                    if (status == "true")
+                    {
+                        document.getElementById(colors[i]).attributes.class.nodeValue = colors[i];
+                    }
+
+                }
+
+                j++;
+
+                if ( j == 4)
+                {
+                    stop = true;
+                }
+            }
+
+    
+        }
+    
+        function stop()
+        {
+            stop = true;
+        }
+
+        </script>
+    </head>
+    <body>
+        
+        <div>Testing</div>
+        <p id = "demo"></p>
+        <button type="button" onclick="start_TrafficLight()">Start!</button>
+         <button type="button" onclick="stop()">Restart</button>
+        <p id = "test"></p>
+        <p id = "test2">bla</p>
+        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="8.5in" height="11in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 8500 11000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:#373435;stroke-width:6.94488}
+    .fil3 {fill:#fffabb}
+    .fil0 {fill:#000000}
+    .fil2 {fill:#f37591}
+    .fil1 {fill:#bae176}
+    .green {fill:#709b22}
+    .red {fill:#FF0000}
+    .yellow {fill:#FFFF00}
+   ]]>
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <rect class="fil0 str0" x="766" y="1829" width="801" height="2403"/>
+  <g id="_202653852832">
+    <circle id= "green" class="fil1 str0" cx="1166" cy="3846" r="294"/>
+   <circle id= "yellow" class="fil3 str0" cx="1166" cy="3030" r="294"/>
+   <circle id= "red" class="fil2 str0" cx="1166" cy="2214" r="294"/>
+  </g>
+ </g>
+</svg>
+
+    </body>
+</html>
