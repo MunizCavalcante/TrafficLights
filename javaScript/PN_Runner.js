@@ -1,5 +1,5 @@
 var ElementXpathQueries = [];
-var status;	
+var status; 
 // in the future these will be passed in as arguments
 var db = 'http://localhost:8080/exist3rc1/rest/db';
 var PN_Instance = '/PetriNets/trafficLight/instance';
@@ -41,7 +41,7 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
     // however, for the same reason the first line above doesn't get called, neither Transition.getName, nor Transition.setTransitionInputs do.
     //When I write Transition.getName() it complains about Transition.getName not being a function. When I write getName(), it complains about this function not having been defined.
     function setTransitionInformation() {
-         xpathQuery = "//transitions/transition[@id='" + Transition.getName + "']";
+         xpathQuery = "//transitions/transition[@id='" + Transition.getName() + "']";
 
         //querying on PN_Definition
         var argument = new Argument( "onSuccess", function() { 
@@ -114,27 +114,34 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
         getDocument(url, argument );
     }
         
-	
+    
 
     function buildTransitionList(transitions)
     {
 
                     url = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
-                    var argument = new Argument( "onSuccess", function() {
+                    var argument = new Argument( "onSuccess", function(transitions) {
 
         //transition = "T1a";
         //transitions/transition[@id="T1a"]/inputs/place[1]
 
         for (var j = 0; j < transitions.length; j++)
         {
+            var transition = new Transition(transitions[j]);
+            ElementXpathQueries.push(transiition);
 
+        }
+          
+        EnableIsReady();
+            },false, false);
+                    getDocument(url, argument);
 
     }
 
 
    function enabled(transitions, transition)
    {
-   		 
+         
 
 
 
@@ -185,9 +192,9 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
         //GETRequest();
         var rtnval = true;  
 
-        for( var i=0; i<ElementXpathQueries[p].length; i++ )
+        for( var i=0; i<ElementXpathQueries[p].inputs.length; i++ )
         {
-            resourceSet = XPathQuery(ElementXpathQueries[p][i]);
+            resourceSet = XPathQuery(ElementXpathQueries[p].inputs[i]);
             rtnval = rtnval && resourceSet;
         }
             

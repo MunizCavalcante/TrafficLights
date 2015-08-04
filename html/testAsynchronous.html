@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 
     <head>
@@ -15,12 +15,8 @@
         <script type="text/javascript" src="../javascript/eXistAccess2.js" defer></script>
         <script type="text/javascript" src="../javascript/PN_Runner.js" defer></script>
         <script type="text/javascript">
-
-        function tryingGitHub()
-        {
-            
-        }
-
+        var i = 0;
+ 
         function start_TrafficLight()
         {
             var colors = ["green", "yellow", "red"];
@@ -33,20 +29,16 @@
             transitions.push("T1c");
 
             url = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
-            var argument = new Argument( "onSuccess", function() {buildTransitionList(); this.setWait('false');}, false, true);
+            var argument = new Argument( "onSuccess", function() {buildTransitionList(transitions); argument.setWait('false');}, false, true);
             getDocument(url, argument );
-
-            
-            while ( Argument.prototype.getWait() === true ) // this is returning undefined...
-            {
-
-                ;
-            }
+        }
+        function EnableIsReady()
+        {
             var j = 0;
             while (!stop)
             {
 
-                for (var i=0; i<transitions.length; i++)
+                for (var i = 0; i<transitions.length; i++)
                 {
                     enabled(transitions, transitions[i]);
                     alert(transitions[i] + ":" + status);
@@ -65,9 +57,9 @@
                     stop = true;
                 }
             }
-
-    
         }
+    
+        
     
         function stop()
         {
