@@ -138,7 +138,7 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
 
 
 
-         var rtnval = true;      
+           
 
         //transition = "T1a";
         //transitions/transition[@id="T1a"]/inputs/place[1]
