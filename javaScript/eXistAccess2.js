@@ -131,9 +131,9 @@ function fileNameInput()
 	{
 
 		if( argument.getAsText() )
-			queryString = url + '/?_query=' + query + '&_wrap=no';
+			queryString = url + '?_query=' + query + '&_wrap=no';
 		else
-			queryString = url + '/?_query=' + query;
+			queryString = url + '?_query=' + query;
 
 		getDocument( queryString, argument );
 	}	
@@ -269,7 +269,15 @@ catch (e) {
 }
 
 
-function XUpdate(XQuery)
+function XUpdate( url, query, argument )
+	{
+
+		queryString = url + '?_query=' + query;
+
+		getDocument( queryString, argument );
+	}	
+
+function XUpdate1(XQuery)
 	
 {	
 	xmlhttp = new XMLHttpRequest();

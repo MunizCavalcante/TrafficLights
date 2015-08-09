@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+  <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 
     <head>
@@ -16,7 +16,7 @@
         <script type="text/javascript" src="../javascript/PN_Runner.js" defer></script>
         <script type="text/javascript">
         var i = 0;
- 
+
         function start_TrafficLight()
         {
             var colors = ["green", "yellow", "red"];
@@ -35,16 +35,18 @@
         function EnableIsReady()
         {
             var j = 0;
-            while (!stop)
+            if (!stop)
             {
 
                 for (var i = 0; i<transitions.length; i++)
-                {
+                {   
+                    t = i;
                     enabled(transitions, transitions[i]);
                     alert(transitions[i] + ":" + status);
 
                     if (status == "true")
                     {
+                        updateTransition();
                         document.getElementById(colors[i]).attributes.class.nodeValue = colors[i];
                     }
 

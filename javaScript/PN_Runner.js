@@ -1,5 +1,6 @@
 var ElementXpathQueries = [];
 var status; 
+var t;
 // in the future these will be passed in as arguments
 var db = 'http://localhost:8080/exist3rc1/rest/db';
 var PN_Instance = '/PetriNets/trafficLight/instance';
@@ -10,55 +11,31 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
          function Transition( name )
     {
         this.name = name;
-        this.inputs = [];
-        this.outputs = [];
+        this.input = [];
+        this.output = [];
         // call getTransitionInformation() which makes an asynch XQuery call
         // to obtain the transition record from the PN_Definition. This will establish
         // the value for xmldoc.
-        setTransitionInformation();
+        //setTransitionInformation(name);
+        //xpathQuery = "//transitions/transition[@id='" + this.name + "']";
+        //Transition.prototype.setTransitionInputs( xpathQuery );
     }
 
     Transition.prototype.getTransitionInputs = function()
     {
-        return this.inputs;
+        return this.input;
     }
 
     Transition.prototype.getTransitionOutputs = function()
     {
-        return this.outputs;
+        return this.output;
     }
 
     Transition.prototype.getName = function() {
         return this.name;
     }
 
-
-    // A few comemnts...
-
-    //Transition.prototype.setTransitionInformation = function() { ...  
-    // when the code is like the line above, the computation below doesn't happen at all.
-    // and that was the reason why I altered this inside the Transition constructor.
-    // however, for the same reason the first line above doesn't get called, neither Transition.getName, nor Transition.setTransitionInputs do.
-    //When I write Transition.getName() it complains about Transition.getName not being a function. When I write getName(), it complains about this function not having been defined.
-    function setTransitionInformation() {
-         xpathQuery = "//transitions/transition[@id='" + Transition.getName() + "']";
-
-        //querying on PN_Definition
-        var argument = new Argument( "onSuccess", function() { 
-
-            // in the following two methods, do client side XQueries (i.e., local) to pull
-            // the information out of the retrieved transition data which is now in xmldoc
-            // this provides the benefit of 
-            Transition.setTransitionInputs//( xmldoc, xpathQuery ); 
-            Transition.setTransitionOutputs//( xmldoc, xpathQuery );
-
-            document.getElementById("test").innerHTML = Transition.getTransitionInputs[1];
-            }, false,false);
-            var PN_Definition = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
-            getDocument(PN_Definition, argument ); 
-    }
-
-    Transition.prototype.setTransitionInputs = function(xmldoc, xpathQuery) {
+    Transition.prototype.setTransitionInputs = function(xpathQuery) {
         xpathQuery += "/inputs/place";
         var query = "count( " + xpathQuery + ")";
         var numResults = LocalQuery(query);
@@ -66,22 +43,21 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
         {   
             var k = j+1;
             var oneResult = LocalQuery(xpathQuery + "[" + k + "]");
-            this.inputs.push(oneResult);
+            this.input.push(oneResult);
         }
 
     } 
 
-    Transition.prototype.setTransitionOutputs = function(xmldoc, xpathQuery) {
-           xpathQuery += "/outputs/place";
+    Transition.prototype.setTransitionOutputs = function(xpathQuery) {
+        xpathQuery += "/outputs/place";
         var query = "count( " + xpathQuery + ")";
         var numResults = LocalQuery(query);
         for (var j = 0; j < numResults; j++)
         {   
             var k = j+1;
             var oneResult = LocalQuery(xpathQuery + "[" + k + "]");
-            this.outputs.push(oneResult);
+            this.output.push(oneResult);
         }
-
 
     }  
 
@@ -119,8 +95,8 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
     function buildTransitionList(transitions)
     {
 
-                    url = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
-                    var argument = new Argument( "onSuccess", function(transitions) {
+                   // url = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
+                   // var argument = new Argument( "onSuccess", function(transitions) {
 
         //transition = "T1a";
         //transitions/transition[@id="T1a"]/inputs/place[1]
@@ -128,13 +104,16 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
         for (var j = 0; j < transitions.length; j++)
         {
             var transition = new Transition(transitions[j]);
-            ElementXpathQueries.push(transiition);
+            xpathQuery = "//transitions/transition[@id='" + transition.name + "']";
+            transition.setTransitionInputs( xpathQuery );
+            transition.setTransitionOutputs( xpathQuery );
+            ElementXpathQueries.push(transition);
 
         }
           
-        EnableIsReady();
-            },false, false);
-                    getDocument(url, argument);
+        EnableIsReady(); //maybe not here, but somewhere inside of Transitions object.
+          //  },false, false);
+                    //getDocument(url, argument);
 
     }
 
@@ -200,7 +179,19 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
             
         document.getElementById("test2").innerHTML = rtnval;
         status = rtnval;
+
+        EnableIsReady();
         
-    },false);
+    },false,false);
         getDocument(url, argument );
+    }
+
+    function updateTransition()
+    {
+
+        for (var i = 0; i < ElementXpathQueries[t].outputs.length; i++)
+        {
+            ElementXpathQueries[t].outputs[i];
+            XUpdate1(url+ElementXpathQueries[t].outputs[i]);
+        }
     }
