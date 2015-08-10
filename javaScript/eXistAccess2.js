@@ -295,7 +295,8 @@ function XUpdate1(XQuery)
 
 
 	xmlhttp.open("GET",XQuery);
-	
+	var encoded = Base64.encode('admin' + ':' + '');
+	xmlhttp.setRequestHeader('Authorization', 'Basic ' + encoded, true);
 	//xmlhttp.open("GET",url);
 	xmlhttp.send(null);
 

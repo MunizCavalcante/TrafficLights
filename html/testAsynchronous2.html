@@ -26,9 +26,9 @@
             PN_Runner_Constructor();
             stop = false;
             transitions = [];
-            transitions.push("T1a");
-            transitions.push("T1b");
-            transitions.push("T1c");
+            transitions.push("T2a");
+            transitions.push("T2b");
+            transitions.push("T2c");
 
             url = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
             var argument = new Argument( "onSuccess", function() {buildTransitionList(); argument.setWait('false');}, false, true);

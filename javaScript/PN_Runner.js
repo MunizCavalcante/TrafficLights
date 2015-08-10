@@ -193,8 +193,8 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
         document.getElementById("test2").innerHTML = rtnval;
         status = rtnval;
         alert(transitions[t] + ":" + status);
-        TransitionObjecsAreReady();
         light = t;
+        TransitionObjecsAreReady();
     },false,false);
 
         getDocument(url, argument );
@@ -203,9 +203,9 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
     function updateTransition()
     {
 
-        for (var i = 0; i < TransitionObjects[t].output.length; i++)
+        for (var i = 0; i < TransitionObjects[light].output.length; i++)
         {
-            TransitionObjects[t].output[i];
-            XUpdate1(url + '?_query=' + TransitionObjects[t].output[i]);
+            TransitionObjects[light].output[i];
+            XUpdate1(url + '?_query=' + TransitionObjects[light].output[i]);
         }
     }
