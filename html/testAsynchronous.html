@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 
     <head>
@@ -15,46 +15,51 @@
         <script type="text/javascript" src="../javascript/eXistAccess2.js" defer></script>
         <script type="text/javascript" src="../javascript/PN_Runner.js" defer></script>
         <script type="text/javascript">
-        var i = 0;
-
+        var count = 0;
+        var loop = 0;
+        var colors = ["green", "yellow", "red"];
         function start_TrafficLight()
         {
-            var colors = ["green", "yellow", "red"];
+            
 
             PN_Runner_Constructor();
             stop = false;
             transitions = [];
-            transitions.push("T1a");
-            transitions.push("T1b");
-            transitions.push("T1c");
+            transitions.push("T2a");
+            transitions.push("T2b");
+            transitions.push("T2c");
 
             url = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
-            var argument = new Argument( "onSuccess", function() {buildTransitionList(transitions); argument.setWait('false');}, false, true);
+            var argument = new Argument( "onSuccess", function() {buildTransitionList(); argument.setWait('false');}, false, true);
             getDocument(url, argument );
         }
-        function EnableIsReady()
+        function TransitionObjecsAreReady()
         {
-            var j = 0;
+            
             if (!stop)
             {
 
-                for (var i = 0; i<transitions.length; i++)
-                {   
-                    t = i;
-                    enabled(transitions, transitions[i]);
-                    alert(transitions[i] + ":" + status);
+                   if ( count < transitions.length)
+                   {
+                        t = count;
+                        enabled(transitions[t]);
+                        
 
-                    if (status == "true")
-                    {
-                        updateTransition();
-                        document.getElementById(colors[i]).attributes.class.nodeValue = colors[i];
+                        if (status == "true")
+                        {
+                            updateTransition();
+                            document.getElementById(colors[light]).attributes.class.nodeValue = colors[light];
+                        }
                     }
+                    else
+                    {
+                        count = -1;
+                    }
+                count++;
 
-                }
+                loop++;
 
-                j++;
-
-                if ( j == 4)
+                if ( loop == 4)
                 {
                     stop = true;
                 }

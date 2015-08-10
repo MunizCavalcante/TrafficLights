@@ -293,6 +293,30 @@ function XUpdate1(XQuery)
 		}
 	}
 
+
+	xmlhttp.open("GET",XQuery);
+	
+	//xmlhttp.open("GET",url);
+	xmlhttp.send(null);
+
+}
+
+function XUpdate2(XQuery)
+	
+{	
+	xmlhttp = new XMLHttpRequest();
+
+	xmlhttp.onreadystatechange = function() 
+	{
+		if (xmlhttp.readyState == 4)
+		{
+			if (xmlhttp.status == 200)
+			{
+				
+			}
+		}
+	}
+
 	if (XQuery = null) 
 	{
 		var XQuery = '?_query=update replace //junk/text() with "test"';	

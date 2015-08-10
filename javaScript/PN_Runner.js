@@ -1,6 +1,7 @@
-var ElementXpathQueries = [];
+var TransitionObjects = [];
 var status; 
 var t;
+var light;  
 // in the future these will be passed in as arguments
 var db = 'http://localhost:8080/exist3rc1/rest/db';
 var PN_Instance = '/PetriNets/trafficLight/instance';
@@ -92,7 +93,7 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
         
     
 
-    function buildTransitionList(transitions)
+    function buildTransitionList()
     {
 
                    // url = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
@@ -107,18 +108,18 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
             xpathQuery = "//transitions/transition[@id='" + transition.name + "']";
             transition.setTransitionInputs( xpathQuery );
             transition.setTransitionOutputs( xpathQuery );
-            ElementXpathQueries.push(transition);
+            TransitionObjects.push(transition);
 
         }
           
-        EnableIsReady(); //maybe not here, but somewhere inside of Transitions object.
+        TransitionObjecsAreReady(); //maybe not here, but somewhere inside of Transitions object.
           //  },false, false);
                     //getDocument(url, argument);
 
     }
 
 
-   function enabled(transitions, transition)
+   function enabled(transition)
    {
          
 
@@ -157,41 +158,54 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
         PN_Instance = "/PetriNets/trafficLight/instance/";
         xmlFileName = "trafficLight.xml";
         url = db + PN_Instance + xmlFileName;
+        
+
+
+        var argument = new Argument( "onSuccess", function() {
+        //GETRequest();
         var p;
         for (var k = 0; k < transitions.length; k++)
         {
-            if (transition == transitions[k])
+            if (transitions[t] == transitions[k])
             {
                 p = k;
             }
         }
 
+        var rtnval = true;
 
-        var argument = new Argument( "onSuccess", function(p) {
-        //GETRequest();
-        var rtnval = true;  
-
-        for( var i=0; i<ElementXpathQueries[p].inputs.length; i++ )
+        for( var i=0; i<TransitionObjects[p].input.length; i++ )
         {
-            resourceSet = XPathQuery(ElementXpathQueries[p].inputs[i]);
+            resourceSet = LocalQuery(TransitionObjects[p].input[i]);
+
+            if ( resourceSet === "true")
+            {
+                resourceSet = true;
+            }
+            else 
+            {
+                resourceSet = false;
+            }
+
             rtnval = rtnval && resourceSet;
         }
             
         document.getElementById("test2").innerHTML = rtnval;
         status = rtnval;
-
-        EnableIsReady();
-        
+        alert(transitions[t] + ":" + status);
+        TransitionObjecsAreReady();
+        light = t;
     },false,false);
+
         getDocument(url, argument );
     }
 
     function updateTransition()
     {
 
-        for (var i = 0; i < ElementXpathQueries[t].outputs.length; i++)
+        for (var i = 0; i < TransitionObjects[t].output.length; i++)
         {
-            ElementXpathQueries[t].outputs[i];
-            XUpdate1(url+ElementXpathQueries[t].outputs[i]);
+            TransitionObjects[t].output[i];
+            XUpdate1(url + '?_query=' + TransitionObjects[t].output[i]);
         }
     }
