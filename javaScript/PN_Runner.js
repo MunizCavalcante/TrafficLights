@@ -1,7 +1,7 @@
 var TransitionObjects = [];
 var status; 
-var t;
-var light;  
+var t = 0;
+var light = 0;  
 // in the future these will be passed in as arguments
 var db = 'http://localhost:8080/exist3rc1/rest/db';
 var PN_Instance = '/PetriNets/trafficLight/instance';
@@ -192,7 +192,7 @@ var PN_Definition = 'http://localhost:8080/exist3rc1/rest/db/trafficLightPN.xml'
             
         document.getElementById("test2").innerHTML = rtnval;
         status = rtnval;
-        alert(transitions[t] + ":" + status);
+        //alert(transitions[t] + ":" + status);
         light = t;
         TransitionObjecsAreReady();
     },false,false);

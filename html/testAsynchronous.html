@@ -17,6 +17,8 @@
         <script type="text/javascript">
         var count = 0;
         var loop = 0;
+        var first = true;
+        var x = 0;
         var colors = ["green", "yellow", "red"];
         var colors2 = ["green2", "yellow2", "red2"];
         function start_TrafficLight()
@@ -29,6 +31,7 @@
             transitions.push("T1a");
             transitions.push("T1b");
             transitions.push("T1c");
+            transitions.push("terminate");
 
             url = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
             var argument = new Argument( "onSuccess", function() {buildTransitionList(); argument.setWait('false');}, false, true);
@@ -36,42 +39,62 @@
         }
         function TransitionObjecsAreReady()
         {
-            
-            
 
-                   if ( count < transitions.length)
+                   if ( count < transitions.length-1)
                    {
                         t = count;
+                        count++;
                         enabled(transitions[t]);
                         
-
-                        if (status == "true")
-                        {
-                            updateTransition();
-                            document.getElementById(colors[light]).attributes.class.nodeValue = colors[light];
-                        }
-
-                        if ( status == "false")
-                        {
-                            document.getElementById(colors[light]).attributes.class.nodeValue = colors2[light];
-                        }
-                    }
+                   }
                     else
                     {
-                        count = -1;
+                        count = 0;
+                        t = 0;
+                        enabled(transitions[t]);
                     }
-                count++;
-
-                loop++;
-
-                if ( (loop > 3) && (loop < 8))
-                {   
-                    if (count < transitions.length)
+                        
+                    if (status == "true")
                     {
-                        t = count;
+                        updateTransition();
+                        document.getElementById(colors[light]).attributes.class.nodeValue = colors[light];
+                         while(x < 5000)
+                        {
+                            x++;
+                        }
                     }
-                    enabled(transitions[t]);
-                }
+
+                   else
+                    {
+                         while(x < 5000)
+                        {
+                            x++;
+                        }   
+                        if (colors[light] != "red")
+                        {
+                            document.getElementById(colors[light]).attributes.class.nodeValue = colors2[light];    
+                        }
+                        
+                    }
+                    
+                    if ( document.getElementById(colors[light]).attributes.class.nodeValue == "green")
+
+                    {
+                        document.getElementById("red").attributes.class.nodeValue = "red2";
+                    }
+                    
+                    
+
+                //loop++;
+
+                //if ( (loop > 3) && (loop < 8))
+                //{   
+                    //if (count < transitions.length)
+                    //{
+                        //t = count;
+                    //}
+                    //enabled(transitions[t]);
+                //}
             
         }
     
