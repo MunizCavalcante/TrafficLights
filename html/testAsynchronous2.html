@@ -28,9 +28,11 @@
             PN_Runner_Constructor();
             stop = false;
             transitions = [];
+            transitions.push("terminate");
             transitions.push("T2a");
             transitions.push("T2b");
             transitions.push("T2c");
+            
 
             url = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
             var argument = new Argument( "onSuccess", function() {buildTransitionList(); argument.setWait('false');}, false, true);
@@ -39,7 +41,7 @@
       function TransitionObjecsAreReady()
         {
 
-                   if ( count < transitions.length)
+                   if (count < transitions.length)
                    {
                         t = count;
                         count++;
@@ -56,7 +58,10 @@
                     if (status == "true")
                     {
                         updateTransition();
-                        document.getElementById(colors[light]).attributes.class.nodeValue = colors[light];
+                        if (light > 0)
+                        {
+                        document.getElementById(colors[light-1]).attributes.class.nodeValue = colors[light-1];
+                        }
                          while(x < 5000)
                         {
                             x++;
@@ -69,19 +74,24 @@
                         {
                             x++;
                         }
-                        if (colors[light] != "red")
+                        if (light > 0)
                         {
-                            document.getElementById(colors[light]).attributes.class.nodeValue = colors2[light];    
+                            if (colors[light-1] != "red")
+                            {
+                                document.getElementById(colors[light-1]).attributes.class.nodeValue = colors2[light-1];    
+                            }
                         }
                         
                     }
 
-                    if ( document.getElementById(colors[light]).attributes.class.nodeValue == "green")
-
+                    if (light > 0)
                     {
-                        document.getElementById("red").attributes.class.nodeValue = "red2";
+                        if ( document.getElementById(colors[light-1]).attributes.class.nodeValue == "green")
+
+                        {
+                            document.getElementById("red").attributes.class.nodeValue = "red2";
+                        }
                     }
-        
                     
                
 

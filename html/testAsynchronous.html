@@ -31,7 +31,7 @@
             transitions.push("T1a");
             transitions.push("T1b");
             transitions.push("T1c");
-            transitions.push("terminate");
+            
 
             url = "http://localhost:8080/exist3rc1/rest/db/TrafficLights/trafficLightPN.xml";
             var argument = new Argument( "onSuccess", function() {buildTransitionList(); argument.setWait('false');}, false, true);
@@ -40,7 +40,7 @@
         function TransitionObjecsAreReady()
         {
 
-                   if ( count < transitions.length-1)
+                   if ( count < transitions.length)
                    {
                         t = count;
                         count++;
